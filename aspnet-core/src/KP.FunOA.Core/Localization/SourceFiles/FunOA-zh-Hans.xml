@@ -17,6 +17,7 @@
     <text name="RememberMe" value="记住我" />
     <text name="ForgetPassword" value="忘记密码"/>
     <text name="NotSelected" value="未选"/>
+    <text name="Change">更改</text>
     <text name="ChangeTenant" value="更改租户"/>
     <text name="LeaveEmptyToSwitchToHost" value="留空以切换到Host"/>
     <text name="LogIn" value="登录" />
@@ -101,6 +102,9 @@
     <text name="DailyWork">工作日志</text>
     <text name="Admini">管理员</text>
     <text name="Save">保存</text>
+    <text name="Register">注册</text>
+    <text name="CurrentTenant">当前租户</text>
+    <text name="Back">回退</text>
   </texts>
 </localizationDictionary>
 
