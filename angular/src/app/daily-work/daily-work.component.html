@@ -1,0 +1,187 @@
+<div [@routerTransition]>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-6">
+                    <h1>工作日报</h1>
+                </div>
+                <div class="col-6 text-right">
+                    <a href="javascript:;" class="btn bg-blue" [routerLink]="['create']">
+                        <i class="fa fa-plus-square"></i>
+                        新建
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content px-2">
+        <div class="container-fluid">
+            <div class="card">
+                <div class="card-header">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <button type="button"
+                                    class="btn bg-blue"
+                                    (click)="getDataPage(1)">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                        <input type="text"
+                               class="form-control"
+                               name="keyword"
+                               placeholder="搜索标题或内容"
+                               [(ngModel)]="keyword"
+                               (keyup.enter)="getDataPage(1)" />
+                    </div>
+                    <div class="card mb-0 mt-1">
+                        <div class="card-body">
+                            <form class="form-horizontal">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group row mb-0">
+                                            <label class="col-md-3 col-form-label">
+                                                是否共享
+                                            </label>
+                                            <div class="col-md-9 pt-2">
+                                                <div class="custom-control custom-radio d-inline">
+                                                    <input type="radio"
+                                                           class="custom-control-input"
+                                                           id="isPublishedAll"
+                                                           name="isPublished"
+                                                           [(ngModel)]="isPublished"
+                                                           [value]="undefined"
+                                                           checked />
+                                                    <label class="custom-control-label" for="isPublishedAll">
+                                                       全部
+                                                    </label>
+                                                </div>
+                                                <div class="custom-control custom-radio d-inline mx-3">
+                                                    <input type="radio"
+                                                           class="custom-control-input"
+                                                           id="isPublishedActive"
+                                                           name="isPublished"
+                                                           [(ngModel)]="isPublished"
+                                                           [value]="true" />
+                                                    <label class="custom-control-label"
+                                                           for="isPublishedActive">
+                                                       是
+                                                    </label>
+                                                </div>
+                                                <div class="custom-control custom-radio d-inline">
+                                                    <input type="radio"
+                                                           class="custom-control-input"
+                                                           id="isPublishedPassive"
+                                                           name="isPublished"
+                                                           [(ngModel)]="isPublished"
+                                                           [value]="false" />
+                                                    <label class="custom-control-label"
+                                                           for="isPublishedPassive">
+                                                        否
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="card-footer">
+                            <button type="button"
+                                    class="btn bg-blue"
+                                    (click)="getDataPage(1)">
+                               搜索
+                            </button>
+                            <button type="button"
+                                    class="btn btn-default float-right"
+                                    (click)="clearFilters()">
+                                清空搜索条件
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body table-responsive p-0">
+                    <table class="table table-hover text-nowrap" [busy]="isTableLoading">
+                        <thead class="bg-light">
+                            <tr>
+                                <th>标题</th>
+                                <th>作者</th>
+                                <th>是否共享</th>
+                                <th>创建日期</th>
+                                <th>修改日期</th>
+                                <th style="width: 310px;">{{ "Actions" | localize }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="
+                  let item of dailyWorks
+                    | paginate
+                      : {
+                          id: 'server',
+                          itemsPerPage: pageSize,
+                          currentPage: pageNumber,
+                          totalItems: totalItems
+                        }
+                ">
+                                <td>
+                                    {{ item.title }}
+                                </td>
+                                <td>{{ item.userName }}</td>
+                                <td>
+                                    <label *ngIf="item.isPublished" style="color:red;">是</label>
+                                    <label *ngIf="!item.isPublished">否</label>
+                                </td>
+                                <td>{{item.creationTime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                                <td>
+                                    <label *ngIf="!item.lastModificationTime">无</label>
+                                    {{item.lastModificationTime | date:'yyyy-MM-dd HH:mm:ss'}}
+                                </td>
+                                <td>                                    
+                                    <button 
+                                            *ngIf="userId==item.creatorUserId"
+                                            type="button"
+                                            class="btn btn-sm bg-secondary"
+                                            (click)="edit(item)">
+                                        <i class="fas fa-pencil-alt"></i>
+                                        {{ "Edit" | localize }}
+                                    </button>
+                                    <button 
+                                    *ngIf="userId==item.creatorUserId"
+                                    type="button"
+                                            class="btn btn-sm bg-danger mx-2"
+                                            (click)="delete(item)">
+                                        <i class="fas fa-trash"></i>
+                                        {{ "Delete" | localize }}
+                                    </button>
+                                    <a href="javascript:;" (click)="show(item)">
+                                       查看
+                                    </a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="card-footer bg-light border-top">
+                    <div class="row">
+                        <div class="col-sm-4 col-12 text-sm-left text-center">
+                            <button class="btn btn-secondary" (click)="refresh()">
+                                <i class="fas fa-redo-alt"></i>
+                            </button>
+                        </div>
+                        <div class="col-sm-4 col-12 text-center">
+                            <p class="mb-0 my-2">
+                                {{ "TotalRecordsCount" | localize: totalItems }}
+                            </p>
+                        </div>
+                        <div class="col-sm-4 col-12">
+                            <div class="float-sm-right m-auto">
+                                <abp-pagination-controls id="server"
+                                                         (pageChange)="getDataPage($event)">
+                                </abp-pagination-controls>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

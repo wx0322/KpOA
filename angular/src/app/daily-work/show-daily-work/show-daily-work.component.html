@@ -1,0 +1,9 @@
+<form class="form-horizontal"
+      autocomplete="off"
+      #showModal="ngForm"
+      (ngSubmit)="close()">
+    <abp-modal-header [title]="dailyWork.title" (onCloseClick)="bsModalRef.hide()"></abp-modal-header>
+    <div class="modal-body">
+        <div class="description" [innerHTML]="dailyWork.description"></div>
+    </div>
+</form>
