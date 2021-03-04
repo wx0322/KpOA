@@ -43,17 +43,12 @@ export class SidebarMenuComponent extends AppComponentBase implements OnInit {
 
     getMenuItems(): MenuItem[] {
         return [
-          new MenuItem(this.l('HomePage'), '/app/home', 'fas fa-home'),
+          new MenuItem('共享日报', '/app/share-log', 'fas fa-home'),
           new MenuItem(
             '我的日报',
             '/app/daily-work',
             'fas fa-building',
             'Pages.DailyWork'
-          ),
-            new MenuItem(
-                '共享日报',
-                '/app/share-log',
-                'fas fa-building',
           ),
             new MenuItem(
                 this.l('Tenants'),

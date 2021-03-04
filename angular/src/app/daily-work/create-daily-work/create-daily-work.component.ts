@@ -13,12 +13,14 @@ import {
   CreateDailyWorkDto
 } from '@shared/service-proxies/service-proxies';
 import { ActivatedRoute, Router } from '@angular/router';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-create-daily-work',
   templateUrl: './create-daily-work.component.html',
   styleUrls: ['./create-daily-work.component.css'],
-  animations: [appModuleAnimation()]
+  animations: [appModuleAnimation()],
+  providers: [DatePipe]
 })
 export class CreateDailyWorkComponent
   extends AppComponentBase implements OnInit {
@@ -46,12 +48,16 @@ export class CreateDailyWorkComponent
     injector: Injector,
     public _dailyWorkService: DailyWorkServiceProxy,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private datePipe: DatePipe
   ) {
     super(injector);
   }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {
+    this.dailyWork.title = "【" + this.datePipe.transform(Date.now(), "yyyy-MM-dd") + "】" +
+      this.appSession.getUserDisplayName() + "-工作总结";
+  }
 
   save(): void {
     this.saving = true;
@@ -65,12 +71,10 @@ export class CreateDailyWorkComponent
       .subscribe(() => {
         this.notify.info(this.l('SavedSuccessfully'));
         this.router.navigate(['../'], { relativeTo: this.route });
-
       });
   }
 
   cancelEvent(): void {
     this.router.navigate(['../'], { relativeTo: this.route });
-
   }
 }
