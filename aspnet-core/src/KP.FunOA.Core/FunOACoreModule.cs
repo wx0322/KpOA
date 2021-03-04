@@ -1,4 +1,5 @@
 ﻿using Abp.Localization;
+using Abp.Localization.Dictionaries;
 using Abp.Modules;
 using Abp.Reflection.Extensions;
 using Abp.Timing;
@@ -36,6 +37,7 @@ namespace KP.FunOA
             Configuration.Settings.Providers.Add<AppSettingProvider>();
             
             Configuration.Localization.Languages.Add(new LanguageInfo("zh-Hans", "中文", "famfamfam-flags ir"));
+        
         }
 
         public override void Initialize()

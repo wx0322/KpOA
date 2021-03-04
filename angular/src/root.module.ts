@@ -20,12 +20,12 @@ import { RootComponent } from './root.component';
 import { AppInitializer } from './app-initializer';
 
 export function getCurrentLanguage(): string {
-  if (abp.localization.currentLanguage.name) {
-    return abp.localization.currentLanguage.name;
-  }
+  //if (abp.localization.currentLanguage.name) {
+  //  return abp.localization.currentLanguage.name;
+  //}
 
-  // todo: Waiting for https://github.com/angular/angular/issues/31465 to be fixed.
-  return 'en';
+  //// todo: Waiting for https://github.com/angular/angular/issues/31465 to be fixed.
+  return 'zh-Hans';
 }
 
 @NgModule({

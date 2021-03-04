@@ -20,7 +20,7 @@ import { ShareLogComponent } from './share-log/share-log.component';
         path: '',
         component: AppComponent,
         children: [
-          { path: 'home', component: HomeComponent, canActivate: [AppRouteGuard] },
+          { path: 'home', component: ShareLogComponent, canActivate: [AppRouteGuard] },
           { path: 'users', component: UsersComponent, data: { permission: 'Pages.Users' }, canActivate: [AppRouteGuard] },
           { path: 'roles', component: RolesComponent, data: { permission: 'Pages.Roles' }, canActivate: [AppRouteGuard] },
           { path: 'tenants', component: TenantsComponent, data: { permission: 'Pages.Tenants' }, canActivate: [AppRouteGuard] },
