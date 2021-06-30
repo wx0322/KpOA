@@ -29,10 +29,12 @@ namespace KP.FunOA.Web.Host.Startup
         private const string _apiVersion = "v1";
 
         private readonly IConfigurationRoot _appConfiguration;
+        private readonly IWebHostEnvironment _hostingEnvironment;
 
         public Startup(IWebHostEnvironment env)
         {
             Clock.Provider = ClockProviders.Local;
+            _hostingEnvironment = env;
             _appConfiguration = env.GetAppConfiguration();
         }
 
@@ -144,14 +146,15 @@ namespace KP.FunOA.Web.Host.Startup
             // Enable middleware to serve generated Swagger as a JSON endpoint
             app.UseSwagger(c => { c.RouteTemplate = "swagger/{documentName}/swagger.json"; });
 
+            var canAccess = _hostingEnvironment.EnvironmentName == "Production" ? "Prod" : "";
             // Enable middleware to serve swagger-ui assets (HTML, JS, CSS etc.)
             app.UseSwaggerUI(options =>
             {
                 // specifying the Swagger JSON endpoint.
                 options.SwaggerEndpoint($"/swagger/{_apiVersion}/swagger.json", $"FunOA API {_apiVersion}");
                 options.IndexStream = () => Assembly.GetExecutingAssembly()
-                    .GetManifestResourceStream("KP.FunOA.Web.Host.wwwroot.swagger.ui.index.html");
-                options.DisplayRequestDuration(); // Controls the display of the request duration (in milliseconds) for "Try it out" requests.  
+                    .GetManifestResourceStream($"KP.FunOA.Web.Host.wwwroot.swagger.ui.index{canAccess}.html");
+                options.DisplayRequestDuration(); // Controls the display of the request duration (in milliseconds) for "Try it out" requests.
             }); // URL: /swagger
         }
     }
